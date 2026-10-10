@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Resume Analyzer | 2nd Year B.Tech CSE-DS Project</title>
+  <meta name="description" content="Analyze your resume, understand your score, find skill gaps, and improve step-by-step with the Smart Resume Analyzer." />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Our CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION BAR
+     ============================================================ -->
+<nav class="navbar">
+  <a class="nav-brand" data-page="landing">
+    <div class="brand-icon">📄</div>
+    Smart Resume Analyzer
+  </a>
+  <ul class="nav-links">
+    <li><a data-page="landing">Home</a></li>
+    <li><a data-page="upload">Analyze</a></li>
+    <li><a data-page="history">History</a></li>
+    <li><a data-page="settings">Settings</a></li>
+  </ul>
+  <div style="display:flex; gap:10px;">
+    <button class="btn btn-secondary btn-sm" onclick="loadDemo()">Try Demo</button>
+    <button class="btn btn-primary btn-sm" onclick="showPage('upload')">Analyze Resume</button>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     PAGE 1: LANDING PAGE
+     ============================================================ -->
+<section id="page-landing" class="page">
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-badge">
+      🎓 Academic Project &nbsp;&bull;&nbsp; B.Tech CSE-DS
+    </div>
+    <h1>Make Your Resume <span>Smarter</span></h1>
+    <p>
+      Analyze your resume, understand your weaknesses, identify skill gaps,
+      and improve your resume step by step — all in one place.
+    </p>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" onclick="showPage('upload')">
+        📄 Analyze My Resume
+      </button>
+      <button class="btn btn-secondary btn-lg" onclick="loadDemo()">
+        ▶ Try Demo
+      </button>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section">
+    <div class="section-label">What We Offer</div>
+    <h2 class="section-title">Everything You Need to Improve</h2>
+    <p class="section-subtitle">Five powerful features working together to help you land your dream internship or job.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📄</span>
+        <h3>Resume Analysis</h3>
+        <p>Upload your resume (PDF or DOCX). We extract text, detect sections, and give you a complete picture.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📊</span>
+        <h3>Skill Gap Radar</h3>
+        <p>Visually compare your skills with job requirements using an interactive radar chart.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔍</span>
+        <h3>Explain My Score</h3>
+        <p>Click any category to understand exactly why your resume received that score.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🩺</span>
+        <h3>Resume Doctor</h3>
+        <p>Fix your biggest resume problems step by step with before/after suggestions.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🏆</span>
+        <h3>Resume Health</h3>
+        <p>Get a Bronze, Silver, or Gold rating and watch your score improve in real time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works Section -->
+  <div class="how-it-works">
+    <div class="container">
+      <div class="section-label">Process</div>
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">10 simple steps from upload to a better resume.</p>
+
+      <div class="steps-flow">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-icon">📤</div>
+          <div class="step-text">Upload Resume</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-icon">📝</div>
+          <div class="step-text">Extract Text</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-icon">🔎</div>
+          <div class="step-text">Detect Sections</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-icon">🔗</div>
+          <div class="step-text">Compare with JD</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-icon">⚖️</div>
+          <div class="step-text">Calculate Score</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">6</div>
+          <div class="step-icon">💡</div>
+          <div class="step-text">Explain Score</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">7</div>
+          <div class="step-icon">🩺</div>
+          <div class="step-text">Find Problems</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">8</div>
+          <div class="step-icon">🔧</div>
+          <div class="step-text">Fix Problems</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">9</div>
+          <div class="step-icon">📈</div>
+          <div class="step-text">Improve Score</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">10</div>
+          <div class="step-icon">✅</div>
+          <div class="step-text">Compare Before/After</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div style="padding:60px 24px; text-align:center; background:linear-gradient(135deg,#eef2ff,#f0fff4);">
+    <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:12px;">Ready to Improve Your Resume?</h2>
+    <p style="color:var(--text-secondary); margin-bottom:28px;">
+      Upload your resume or try the demo — it only takes a minute.
+    </p>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" onclick="showPage('upload')">📄 Get Started Free</button>
+      <button class="btn btn-secondary btn-lg" onclick="loadDemo()">▶ Try Demo First</button>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ============================================================
+     PAGE 2: UPLOAD PAGE
+     ============================================================ -->
+<section id="page-upload" class="page">
+  <div class="container">
+    <div class="upload-header">
+      <h2>Analyze Your Resume</h2>
+      <p>Upload your resume and (optionally) paste the Job Description for a detailed match analysis.</p>
+    </div>
+
+    <div class="upload-layout">
+
+      <!-- Drop Zone -->
+      <div>
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="resumeInput" accept=".pdf,.docx" />
+          <span class="drop-icon">📄</span>
+          <h3>Drag & Drop Your Resume</h3>
+          <p>or click to browse files</p>
+          <p style="margin-top:8px; font-size:12px; color:var(--text-muted);">
+            Supported: PDF, DOCX &nbsp;&bull;&nbsp; Max: 5 MB
+          </p>
+        </div>
+        <div class="file-selected" id="fileLabel"></div>
+
+        <!-- Resume Tips -->
+        <div class="card mt-4" style="padding:16px 20px;">
+          <div style="font-size:13px; font-weight:700; margin-bottom:10px; color:var(--text-secondary);">
+            💡 UPLOAD TIPS
+          </div>
+          <ul style="list-style:none; font-size:13px; color:var(--text-secondary);">
+            <li style="padding:4px 0;">✓ Make sure your PDF has selectable text (not a scan)</li>
+            <li style="padding:4px 0;">✓ DOCX files extracted more accurately</li>
+            <li style="padding:4px 0;">✓ File size must be under 5 MB</li>
+            <li style="padding:4px 0;">✓ Paste the Job Description for a match score</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Job Description -->
+      <div class="jd-area">
+        <label for="jdInput">Job Description <span style="color:var(--text-muted); font-weight:400;">(Optional)</span></label>
+        <p class="field-hint">
+          Paste the full job description to get a skill match score and identify missing keywords.
+        </p>
+        <textarea id="jdInput" placeholder="Paste the job description here...
+
+Example:
+We are looking for a Data Analyst intern with skills in:
+- Python, SQL, Excel
+- Data visualization (Power BI, Tableau)
+- Machine learning basics
+- Good communication skills"></textarea>
+
+        <div class="info-box mt-4">
+          <strong>Why paste a JD?</strong> Pasting a job description enables the Skill Gap Radar,
+          Job Match %, and keyword-based suggestions tailored to the specific role.
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="analyze-btn-wrap">
+      <button class="btn btn-primary btn-lg" id="analyzeBtn" onclick="analyzeResume()">
+        🔍 Analyze My Resume
+      </button>
+      <button class="btn btn-secondary btn-lg" onclick="loadDemo()">
+        ▶ Try Demo Instead
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 3: LOADING SCREEN
+     ============================================================ -->
+<section id="page-loading" class="page">
+  <div class="loading-card">
+    <div class="loading-spinner"></div>
+    <h3>Analyzing Your Resume...</h3>
+    <p>This takes just a few seconds. We are checking everything.</p>
+    <div class="loading-steps" id="loadingSteps">
+      <!-- Dynamically populated by JS -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 4: RESULTS PAGE
+     ============================================================ -->
+<section id="page-results" class="page">
+
+  <!-- Results Header -->
+  <div class="results-header">
+    <div class="container">
+      <div class="results-candidate">
+        <h2 id="resCandidateName">Candidate Name</h2>
+        <p id="resCandidateEmail">email@example.com</p>
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3);"
+                  onclick="showPage('upload')">← Analyze New Resume</button>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3);"
+                  onclick="loadDemo()">▶ Try Demo</button>
+        </div>
+      </div>
+
+      <div class="results-score-cards">
+        <div class="score-mini-card">
+          <div class="label">Total Score</div>
+          <div class="value" id="headerTotalScore">—</div>
+          <div class="sub">out of 100</div>
+        </div>
+        <div class="score-mini-card">
+          <div class="label">Resume Health</div>
+          <div class="value" id="headerHealthBadge" style="font-size:1rem;">—</div>
+          <div class="sub">level</div>
+        </div>
+        <div class="score-mini-card">
+          <div class="label">Job Match</div>
+          <div class="value" id="headerJobMatch">—</div>
+          <div class="sub">keyword match</div>
+        </div>
+        <div class="score-mini-card">
+          <div class="label">Words</div>
+          <div class="value" id="headerWordCount">—</div>
+          <div class="sub">in resume</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-wrapper">
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="overview"      onclick="switchTab('overview')">📊 Overview</button>
+      <button class="tab-btn"        data-tab="skill-match"   onclick="switchTab('skill-match')">📡 Skill Match</button>
+      <button class="tab-btn"        data-tab="suggestions"   onclick="switchTab('suggestions')">💡 Suggestions</button>
+      <button class="tab-btn"        data-tab="score-breakdown" onclick="switchTab('score-breakdown')">🔍 Explain My Score</button>
+      <button class="tab-btn"        data-tab="resume-doctor" onclick="switchTab('resume-doctor')">🩺 Resume Doctor</button>
+    </div>
+
+    <!-- ======================== TAB: OVERVIEW ======================== -->
+    <div id="tab-overview" class="tab-panel active">
+      <div class="results-grid">
+
+        <!-- Score Circle + Health -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🏆 Resume Score</div>
+          </div>
+          <div class="score-circle-wrap">
+            <div class="score-circle" id="scoreCircle" style="--pct:0;">
+              <div class="score-inner">
+                <div class="score-value" id="scoreValue">0</div>
+                <div class="score-max">/100</div>
+              </div>
+            </div>
+            <div id="healthBadge" class="health-badge health-silver">🥈 Silver</div>
+            <div id="healthMessage" class="text-muted text-center" style="font-size:13px;">
+              Your resume is being analyzed...
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Progress Bars -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📈 Score Categories</div>
+            <span class="badge badge-primary" style="font-size:11px;">Click "Explain My Score" for details</span>
+          </div>
+          <div id="ovFmt" class="progress-item"></div>
+          <div id="ovKw"  class="progress-item"></div>
+          <div id="ovRead" class="progress-item"></div>
+          <div id="ovStr" class="progress-item"></div>
+          <div id="ovComp" class="progress-item"></div>
+          <div id="ovRel"  class="progress-item"></div>
+        </div>
+
+      </div>
+
+      <!-- Second row: Quality vs Fit + Resume Preview -->
+      <div class="results-grid mt-6">
+
+        <!-- Resume Quality vs Job Fit -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📋 Quality vs Fit</div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; text-align:center;">
+            <div style="padding:20px; background:var(--bg); border-radius:var(--radius-sm);">
+              <div style="font-size:2rem; font-weight:800; color:var(--primary);" id="resumeQualityScore">—</div>
+              <div style="font-weight:700; margin:8px 0 4px; font-size:0.9rem;">Resume Quality</div>
+              <div class="text-muted" style="font-size:12px;">How strong is the resume itself?</div>
+            </div>
+            <div style="padding:20px; background:var(--bg); border-radius:var(--radius-sm);">
+              <div style="font-size:2rem; font-weight:800; color:#10b981;" id="jobFitScore">—</div>
+              <div style="font-weight:700; margin:8px 0 4px; font-size:0.9rem;">Job Fit</div>
+              <div class="text-muted" style="font-size:12px;">How well does it match this JD?</div>
+            </div>
+          </div>
+          <div class="info-box mt-4">
+            <strong>What's the difference?</strong> A resume can be well-written (high Quality) but still
+            score low on Job Fit if it doesn't contain skills relevant to the specific job you are applying for.
+          </div>
+
+          <!-- Top Improvement -->
+          <div style="margin-top:16px; padding:16px; background:var(--warning-bg); border-radius:var(--radius-sm); border:1px solid #fcd34d;">
+            <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#92400e; margin-bottom:6px;">
+              ⭐ Top Improvement
+            </div>
+            <div id="topImprovement" style="font-size:14px; color:#92400e; font-weight:500;">
+              Analyzing...
+            </div>
+          </div>
+        </div>
+
+        <!-- Resume Preview -->
+        <div class="resume-preview">
+          <div class="preview-header">
+            <h4>📄 Resume Section Preview</h4>
+            <p>Click any section to learn more</p>
+          </div>
+          <div class="preview-body" id="resumePreviewBody">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ======================== TAB: SKILL MATCH ======================== -->
+    <div id="tab-skill-match" class="tab-panel">
+
+      <!-- Match percentage ring -->
+      <div class="card mb-6" style="text-align:center; padding:28px;">
+        <div class="card-title" style="justify-content:center; margin-bottom:16px;">
+          🎯 Job Match Analysis
+        </div>
+        <div class="match-ring">
+          <svg viewBox="0 0 120 120">
+            <circle class="track" cx="60" cy="60" r="50"/>
+            <circle class="fill" cx="60" cy="60" r="50"/>
+          </svg>
+          <div class="center-text">
+            <div class="center-pct" id="matchPct">0%</div>
+            <div class="center-label">Match</div>
+          </div>
+        </div>
+        <p class="text-muted" style="margin-top:12px; font-size:13px;">
+          Based on keyword matching between your resume and the Job Description.
+        </p>
+        <div class="info-box mt-4" style="text-align:left; max-width:500px; margin:12px auto 0;">
+          <strong>What should I improve first?</strong> Focus on HIGH priority missing skills first.
+          They have the biggest impact on your job match score.
+        </div>
+      </div>
+
+      <!-- Radar + Skill Lists -->
+      <div class="radar-container">
+
+        <!-- Radar Chart -->
+        <div class="radar-chart-wrap">
+          <div class="card-title mb-4">📡 Skill Gap Radar</div>
+          <p class="text-muted" style="font-size:12px; margin-bottom:16px;">
+            The larger the gap between the two lines, the more attention that skill area needs.
+          </p>
+          <canvas id="radarChart"></canvas>
+          <div class="radar-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#6366f1;"></div>
+              Your Skills
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#f59e0b;"></div>
+              Required Skills
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill Lists -->
+        <div class="skill-lists">
+
+          <div class="skill-list-card">
+            <div class="skill-list-title" style="color:var(--success);">✓ Matched Skills</div>
+            <div id="matchedSkillsList">
+              <p class="text-muted">Loading...</p>
+            </div>
+          </div>
+
+          <div class="skill-list-card">
+            <div class="skill-list-title" style="color:var(--warning);">⚠ Missing / Recommended Skills</div>
+            <div id="priorityMissingList">
+              <p class="text-muted">Loading...</p>
+            </div>
+          </div>
+
+          <div class="skill-list-card">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div>
+                <div class="skill-list-title" style="color:var(--success); margin-bottom:10px;">💪 Strong Areas</div>
+                <ul id="strongAreas" style="list-style:none; font-size:13px; color:var(--success);"></ul>
+              </div>
+              <div>
+                <div class="skill-list-title" style="color:var(--warning); margin-bottom:10px;">📚 Needs Work</div>
+                <ul id="weakAreas" style="list-style:none; font-size:13px; color:var(--warning);"></ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- ======================== TAB: SUGGESTIONS ======================== -->
+    <div id="tab-suggestions" class="tab-panel">
+      <div id="suggestionsContainer">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+
+
+    <!-- ======================== TAB: SCORE BREAKDOWN ======================== -->
+    <div id="tab-score-breakdown" class="tab-panel">
+      <div style="margin-bottom:20px;">
+        <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:4px;">
+          🔍 Why Did I Get This Score?
+        </h3>
+        <p class="text-muted">
+          Click on any category below to see the detailed reasoning behind your score.
+          We explain every point deducted and what you can do to improve it.
+        </p>
+      </div>
+      <div id="scoreBreakdownContainer">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+
+
+    <!-- ======================== TAB: RESUME DOCTOR ======================== -->
+    <div id="tab-resume-doctor" class="tab-panel">
+
+      <!-- Doctor Header -->
+      <div class="doctor-header">
+        <div class="doctor-icon">🩺</div>
+        <div>
+          <h3>Resume Doctor</h3>
+          <p>Let's fix your resume problems one at a time.</p>
+        </div>
+      </div>
+
+      <!-- Problems List -->
+      <div class="problem-list" id="problemListContainer">
+        <!-- Dynamically populated -->
+      </div>
+
+      <!-- Fix Cards (Before/After) -->
+      <div id="fixCardContainer" style="margin-top:8px;">
+        <!-- Dynamically populated -->
+      </div>
+
+      <!-- Score Improvement Panel -->
+      <div id="scoreImprovement" class="score-improvement hidden mt-6">
+        <div class="improvement-num" id="improvementNum">+0</div>
+        <div class="improvement-label" id="improvementLabel">points gained</div>
+        <div class="improvement-breakdown" id="improvementBreakdown"></div>
+      </div>
+
+      <!-- Before / After Comparison -->
+      <div class="comparison-section mt-6">
+        <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:16px;">
+          📊 Resume Improvement: Before vs After
+        </h3>
+
+        <div class="comparison-cards">
+          <div class="comparison-card before-card">
+            <h4>BEFORE</h4>
+            <div class="comparison-score" id="beforeScore">—</div>
+            <ul class="comparison-list" id="beforeList"></ul>
+          </div>
+          <div class="comparison-card after-card">
+            <h4>AFTER</h4>
+            <div class="comparison-score" id="afterScore">—</div>
+            <ul class="comparison-list" id="afterList"></ul>
+          </div>
+        </div>
+
+        <div style="text-align:center; padding:16px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+          <p id="improvementText" style="font-size:1rem; font-weight:600; color:var(--text-secondary);">
+            Accept Resume Doctor fixes to see your score improve.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- end tabs-wrapper -->
+</section>
+
+
+<!-- ============================================================
+     PAGE 5: HISTORY PAGE
+     ============================================================ -->
+<section id="page-history" class="page">
+  <div class="container">
+
+    <div class="history-header">
+      <h2>📈 Analysis History</h2>
+      <p style="color:var(--text-secondary);">
+        All resumes analyzed and stored in the database.
+      </p>
+    </div>
+
+    <!-- History Loading -->
+    <div id="historyLoading" class="history-loading">
+      <div class="loading-spinner"></div>
+      <p>Loading analysis history...</p>
+    </div>
+
+    <!-- History Cards -->
+    <div class="history-items" id="historyItems">
+      <!-- Dynamically populated from MySQL -->
+    </div>
+
+    <!-- Database Statistics -->
+    <div id="historyStats" class="history-stats" style="display:none;">
+      <div class="history-stat-card">
+        <span class="stat-icon">📄</span>
+        <div>
+          <div class="stat-number" id="historyTotal">0</div>
+          <div class="stat-label">Total Analyses</div>
+        </div>
+      </div>
+
+      <div class="history-stat-card">
+        <span class="stat-icon">🏆</span>
+        <div>
+          <div class="stat-number" id="historyBestScore">0</div>
+          <div class="stat-label">Best Score</div>
+        </div>
+      </div>
+
+      <div class="history-stat-card">
+        <span class="stat-icon">📊</span>
+        <div>
+          <div class="stat-number" id="historyAvgScore">0</div>
+          <div class="stat-label">Average Score</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Refresh Button -->
+    <div style="text-align:center; margin-top:24px;">
+      <button class="btn btn-secondary btn-sm" onclick="renderHistory()">
+        🔄 Refresh History
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     HISTORY DETAIL MODAL
+     ============================================================ -->
+<div id="historyDetailModal" class="history-modal">
+  <div class="history-modal-content">
+
+    <div class="history-modal-header">
+      <div>
+        <h3>📄 Resume Analysis Details</h3>
+        <p id="detailFileName">Resume</p>
+      </div>
+
+      <button class="history-modal-close"
+              onclick="closeHistoryDetails()">
+        ✕
+      </button>
+    </div>
+
+    <div id="historyDetailBody">
+      <!-- Details loaded dynamically -->
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============================================================
+     PAGE 6: SETTINGS PAGE
+     ============================================================ -->
+<section id="page-settings" class="page">
+  <div class="container">
+    <div class="settings-layout">
+      <div class="settings-header">
+        <h2>⚙️ Settings</h2>
+        <p style="color:var(--text-secondary);">Personalize your Smart Resume Analyzer experience.</p>
+      </div>
+
+      <!-- Profile Settings -->
+      <div class="settings-section">
+        <h3>👤 Profile</h3>
+        <div class="form-group">
+          <label for="settingName">Full Name</label>
+          <input type="text" id="settingName" placeholder="Your Name" />
+        </div>
+        <div class="form-group">
+          <label for="settingEmail">Email Address</label>
+          <input type="email" id="settingEmail" placeholder="email@example.com" />
+        </div>
+      </div>
+
+      <!-- Job Preferences -->
+      <div class="settings-section">
+        <h3>🎯 Job Preferences</h3>
+        <div class="form-group">
+          <label for="settingRole">Target Role</label>
+          <select id="settingRole">
+            <option>Data Analyst</option>
+            <option>Data Scientist</option>
+            <option>Software Engineer</option>
+            <option>Machine Learning Engineer</option>
+            <option>Business Analyst</option>
+            <option>Web Developer</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="settingLevel">Experience Level</label>
+          <select id="settingLevel">
+            <option>Student/Fresher</option>
+            <option>0-1 Year</option>
+            <option>1-3 Years</option>
+            <option>3+ Years</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Display Preferences -->
+      <div class="settings-section">
+        <h3>🖥️ Display Preferences</h3>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" id="showExplanations" checked />
+            <span>Show detailed score explanations</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="showSkillGap" checked />
+            <span>Show skill gap radar chart</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="showSuggestions" checked />
+            <span>Show improvement suggestions</span>
+          </label>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveSettings()" style="width:100%;">
+        💾 Save Settings
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- Our JS -->
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
